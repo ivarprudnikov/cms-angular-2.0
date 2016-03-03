@@ -1,0 +1,41 @@
+<div class="page-head">
+  <div class="container">
+    <div class="title">
+      <h1>Create {{contentType.name}}</h1>
+    </div>
+    <div class="actions">
+      <a ui-sref="^.list" class="btn btn-warning btn-sm">Cancel</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-sm-8">
+
+      <p class="alert alert-info" ng-show="loadingMessage">{{loadingMessage}}</p>
+
+      <ul>
+        <li ng-repeat="(key, errors) in itemForm.$error track by $index"> <strong>{{ key }}</strong> errors
+          <ul>
+            <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <form name="itemForm"
+            sf-schema="schema"
+            sf-form="formDefinition"
+            sf-model="newItemModel"
+            ng-submit="onSubmit(itemForm)"></form>
+    </div>
+    <div class="col-sm-4">
+      <h4>Item</h4>
+      <pre>{{ newItemModel | json }}</pre>
+      <h4>Schema</h4>
+      <pre>{{ schema | json }}</pre>
+    </div>
+  </div>
+
+</div>

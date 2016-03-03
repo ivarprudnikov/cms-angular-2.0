@@ -1,0 +1,47 @@
+<div class="page-head">
+  <div class="container">
+    <div class="title">
+      <h1>Edit {{contentType.name}}</h1>
+    </div>
+    <div class="actions">
+      <a ui-sref="^.list" class="btn btn-default btn-sm">Back to list</a>
+      <a ui-sref="^.show({id:existingItemModel._id, key:contentType.key})" class="btn btn-default btn-sm">Preview</a>
+      <a href="javascript:void(0)" class="btn btn-danger btn-sm" ng-click="delete()">Delete this item</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-sm-8">
+
+      <div ng-if="existingItemModel">
+
+        <p class="alert alert-info" ng-show="loadingMessage">{{loadingMessage}}</p>
+
+        <ul>
+          <li ng-repeat="(key, errors) in itemForm.$error track by $index"> <strong>{{ key }}</strong> errors
+            <ul>
+              <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <form name="itemForm"
+              sf-schema="schema"
+              sf-form="formDefinition"
+              sf-model="existingItemModel"
+              ng-submit="onSubmit(itemForm)"></form>
+      </div>
+
+    </div>
+    <div class="col-sm-4">
+      <h4>Item</h4>
+      <pre>{{ existingItemModel | json }}</pre>
+      <h4>Schema</h4>
+      <pre>{{ schema | json }}</pre>
+    </div>
+  </div>
+
+</div>

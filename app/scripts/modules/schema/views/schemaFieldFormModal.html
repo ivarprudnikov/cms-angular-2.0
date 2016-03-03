@@ -1,0 +1,86 @@
+<div class="modal-header">
+  <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h4 class="modal-title">Content type field</h4>
+</div>
+<div class="modal-body">
+
+  <div class="row">
+
+    <div class="col-md-6">
+
+      <!-- NEW SCHEMA FIELD FORM -->
+
+      <form name="newSchemaFieldForm" novalidate ng-submit="save()">
+
+        <div class="form-group"
+              ng-class="{ 'has-error': (newSchemaFieldForm.$submitted || newSchemaFieldForm.fieldKey.$touched) && newSchemaFieldForm.fieldKey.$invalid }">
+          <label for="fieldKey">Field key</label>
+          <input type="text" required="required" id="fieldKey" name="fieldKey" class="form-control" placeholder="Field key" ng-model="newFieldItem.key">
+        </div>
+
+        <div class="form-group"
+              ng-class="{ 'has-error': (newSchemaFieldForm.$submitted || newSchemaFieldForm.fieldTitle.$touched) && newSchemaFieldForm.fieldTitle.$invalid }">
+          <label for="fieldTitle">Visible field title</label>
+          <input type="text" required="required" id="fieldTitle" name="fieldTitle" class="form-control" placeholder="Field title" ng-model="newFieldItem.title">
+        </div>
+
+        <div class="form-group">
+          <label for="fieldDescription">Visible field description</label>
+          <textarea id="fieldDescription" class="form-control" placeholder="Describe its purpose" ng-model="newFieldItem.description"></textarea>
+        </div>
+
+        <div class="form-group"
+          ng-class="{ 'has-error': (newSchemaFieldForm.$submitted || newSchemaFieldForm.fieldType.$touched) && newSchemaFieldForm.fieldType.$invalid }">
+          <label for="fieldType">Field type {{newFieldItemType}}</label>
+          <select id="fieldType"
+                  name="fieldType"
+                  required="required"
+                  class="form-control"
+                  ng-model="newFieldItemType"
+                  ng-options="key as value for (key , value) in fieldTypes">
+            <option value="">-- nothing selected --</option>
+          </select>
+        </div>
+
+        <div class="form-group"
+              ng-if="availableEditorsForField.length"
+              ng-class="{ 'has-error': (newSchemaFieldForm.$submitted || newSchemaFieldForm.displayAs.$touched) && newSchemaFieldForm.displayAs.$invalid }">
+          <label for="displayAs">Display as</label>
+          <select id="displayAs"
+                  name="displayAs"
+                  required="required"
+                  class="form-control"
+                  ng-model="newFieldItem['x-schema-form'].type"
+                  ng-options="item for item in availableEditorsForField">
+          </select>
+        </div>
+
+        <div class="checkbox" ng-if="newFieldItemType === 'string' || newFieldItemType === 'integer' || newFieldItemType === 'number'">
+          <label>
+            <input type="checkbox" id="isFieldRequired" value="isRequired" ng-model="newFieldItem.isRequired"> Is it always required?
+          </label>
+        </div>
+
+        <hr>
+
+        <button type="submit" class="btn btn-primary" ng-click="save()">Save field</button>
+        <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+
+      </form>
+
+    </div>
+
+    <div class="col-md-6">
+
+      <div json-preview obj="newFieldItem" display-name="'Field details preview'"></div>
+      <div json-preview obj="previewFormSchema" display-name="'Preview schema'"></div>
+      <div json-preview obj="previewFormUI" display-name="'Preview UI'"></div>
+      <div json-preview obj="previewFormModel" display-name="'Preview model'"></div>
+
+    </div>
+
+  </div>
+
+</div>

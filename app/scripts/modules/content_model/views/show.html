@@ -1,0 +1,52 @@
+<div class="page-head">
+  <div class="container">
+    <div class="title">
+      <h1>Showing {{contentType.name ? contentType.name : contentTypeKey}} item</h1>
+    </div>
+    <div class="actions">
+      <a ui-sref="^.list" class="btn btn-default btn-sm">List all [{{contentType.name ? contentType.name : contentTypeKey}}]</a>
+      <a ng-if="item" ui-sref="^.edit({id:item._id, key: contentTypeKey})" class="btn btn-default btn-sm">Edit</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-8">
+
+      <div class="block-large">
+
+        <p class="alert alert-info" ng-show="loadingMessage">{{loadingMessage}}</p>
+
+        <div ng-if="item">
+
+          <h2>Stored content</h2>
+
+          <h5 class="model-title">ID</h5>
+          <div class="model-value">{{item._id}}</div>
+
+          <div ng-repeat="(k,v) in contentType.schema.properties">
+            <h5 class="model-title">{{v.title || k}}</h5>
+            <p class="model-value">{{item[k]}}</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="col-sm-4">
+      <h4>Item</h4>
+      <pre>{{ item | json }}</pre>
+
+      <h4>Content type</h4>
+      <pre>{{ contentType | json }}</pre>
+    </div>
+
+  </div>
+
+</div>

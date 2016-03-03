@@ -1,0 +1,58 @@
+<div class="page-head">
+  <div class="container">
+
+    <div class="title">
+      <h1>
+        {{total}} {{contentType.name ? contentType.name : contentTypeKey}}{{total > 1 ? 's' : ''}}
+        <small ng-show="!contentType.name">Content type not set yet</small>
+      </h1>
+    </div>
+
+    <div class="actions" ng-if="contentType">
+      <a ui-sref="^.create" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-plus"></span>
+        Create new item
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+
+  <div ng-if="results != null && results.data && !results.data.length" class="alert alert-warning">
+    Nothing found
+  </div>
+  <div ng-if="loadingMessage" class="alert alert-warning">{{loadingMessage}}</div>
+
+  <p>Found {{results.total || 0}} items</p>
+
+  <table class="table table-striped table-bordered" ng-show="results.data.length">
+    <thead>
+    <tr>
+      <th></th>
+      <th>ID</th>
+      <th>Display name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in results.data">
+      <td><a ui-sref="^.show({id:item._id})">{{searchOptions.offset + $index + 1}}</a></td>
+      <td><a ui-sref="^.show({id:item._id})">{{item._id}}</a></td>
+      <td><a ui-sref="^.show({id:item._id})">{{item[contentType.titleField] || item._id}}</a></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div ng-if="results.data.length">
+    <pagination
+      total-items="results.total"
+      ng-model="pagination.page"
+      items-per-page="searchOptions.max"
+      max-size="5"
+      boundary-links="true"
+      rotate="true"
+      class="pagination-sm"></pagination>
+  </div>
+
+</div>

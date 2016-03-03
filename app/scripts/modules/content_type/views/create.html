@@ -1,0 +1,94 @@
+<div class="page-head">
+  <div class="container">
+    <div class="title">
+      <h1>Create new content type</h1>
+    </div>
+    <div class="actions">
+      <a ui-sref="^.list" class="btn btn-warning btn-sm">Cancel</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-6">
+
+      <h2>Content type definition</h2>
+
+      <!-- MAIN FORM -->
+
+      <form ng-submit="save()">
+
+        <!-- main required fields -->
+
+        <div class="form-group">
+          <label for="key">Key</label>
+          <input type="text" id="key" class="form-control" placeholder="Content type key" ng-model="newItem.key" autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" class="form-control" placeholder="Content type name" ng-model="newItem.name" autofocus>
+        </div>
+
+        <hr class="hr-fat">
+
+        <!-- schema fields -->
+
+        <label>Content type fields</label>
+
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="(k,v) in newItem.schema.properties">
+            <a href="javascript:void(0)" class="pull-right btn btn-link btn-sm" ng-click="editSchemaField(k)">Edit</a>
+            <a href="javascript:void(0)" class="pull-right btn btn-link btn-sm" ng-click="deleteSchemaField(k)">Delete</a>
+            <p>
+              <span>{{k}}</span>
+              <span>{{v.type}}</span>
+              <span ng-repeat="req in newItem.schema.required | filter:k">Is required</span>
+            </p>
+            <p>{{v.description}}</p>
+          </li>
+        </ul>
+
+        <div class="form-group">
+          <button type="button" class="btn btn-default" ng-click="addSchemaField()">Add a content field</button>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Primary title field</label>
+          <select id="titleField" name="titleField"
+                  ng-model="newItem.titleField"
+                  class="form-control"
+                  ng-required=""
+                  ng-options="k as k for (k,field) in newItem.schema.properties">
+            <!-- id field as default -->
+            <option value="">None</option>
+          </select>
+          <p class="help-block">Select content type field which will be used as primary title.</p>
+        </div>
+
+        <hr class="hr-fat">
+
+        <!-- main form actions -->
+
+        <div class="actions">
+          <button class="btn btn-primary">Save</button>
+        </div>
+
+    	</form>
+
+    </div>
+
+
+    <div class="col-sm-6">
+      <pre>{{ newItem | json }}</pre>
+    </div>
+
+
+  </div>
+
+
+
+</div>
