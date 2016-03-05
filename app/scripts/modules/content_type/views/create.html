@@ -4,7 +4,7 @@
       <h1>Create new content type</h1>
     </div>
     <div class="actions">
-      <a ui-sref="^.list" class="btn btn-warning btn-sm">Cancel</a>
+      <a [routerLink]="['ContentTypeList']" class="btn btn-warning btn-sm">Cancel</a>
     </div>
   </div>
 </div>
@@ -19,62 +19,65 @@
 
       <!-- MAIN FORM -->
 
-      <form ng-submit="save()">
+      <form (ngSubmit)="onSubmit()" #formCreate="ngForm">
 
         <!-- main required fields -->
 
         <div class="form-group">
           <label for="key">Key</label>
-          <input type="text" id="key" class="form-control" placeholder="Content type key" ng-model="newItem.key" autofocus>
+          <input type="text" id="key" class="form-control" placeholder="Content type key" [(ngModel)]="newItem.key" autofocus>
         </div>
 
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" class="form-control" placeholder="Content type name" ng-model="newItem.name" autofocus>
+          <input type="text" id="name" class="form-control" placeholder="Content type name" [(ngModel)]="newItem.name">
         </div>
 
-        <hr class="hr-fat">
+        <hr>
 
         <!-- schema fields -->
 
         <label>Content type fields</label>
 
         <ul class="list-group">
-          <li class="list-group-item" ng-repeat="(k,v) in newItem.schema.properties">
-            <a href="javascript:void(0)" class="pull-right btn btn-link btn-sm" ng-click="editSchemaField(k)">Edit</a>
-            <a href="javascript:void(0)" class="pull-right btn btn-link btn-sm" ng-click="deleteSchemaField(k)">Delete</a>
+          <li class="list-group-item" *ngFor="#entry of newItem.schema?.properties | mapToIterable">
+            <a href="javascript:void(0)" class="pull-right btn btn-link btn-sm" (click)="editSchemaField(entry.key)">Edit</a>
+            <a href="javascript:void(0)" class="pull-right btn btn-link btn-sm" (click)="deleteSchemaField(entry.key)">Delete</a>
             <p>
-              <span>{{k}}</span>
-              <span>{{v.type}}</span>
-              <span ng-repeat="req in newItem.schema.required | filter:k">Is required</span>
+              <span>{{entry.key}}</span>
+              <span>{{entry.value.type}}</span>
+              <span *ngFor="#req of newItem.schema?.required | findValue:entry.key">Is required</span>
             </p>
-            <p>{{v.description}}</p>
+            <p>{{entry.value.description}}</p>
           </li>
         </ul>
 
         <div class="form-group">
-          <button type="button" class="btn btn-default" ng-click="addSchemaField()">Add a content field</button>
+          <button type="button" class="btn btn-default" (click)="addSchemaField()">Add a content field</button>
         </div>
 
         <div class="form-group">
           <label for="name">Primary title field</label>
-          <select id="titleField" name="titleField"
-                  ng-model="newItem.titleField"
+          <select id="titleField"
+                  name="titleField"
+                  [(ngModel)]="newItem.titleField"
                   class="form-control"
-                  ng-required=""
-                  ng-options="k as k for (k,field) in newItem.schema.properties">
+                  required>
             <!-- id field as default -->
             <option value="">None</option>
+            <option *ngFor="#prop of newItem.schema?.properties | mapToIterable" [value]="prop.key">{{prop.key}}</option>
           </select>
           <p class="help-block">Select content type field which will be used as primary title.</p>
         </div>
 
-        <hr class="hr-fat">
+        <hr>
 
         <!-- main form actions -->
 
         <div class="actions">
-          <button class="btn btn-primary">Save</button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="!formCreate.form.valid">Save</button>
         </div>
 
     	</form>

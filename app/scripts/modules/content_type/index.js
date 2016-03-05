@@ -15,6 +15,8 @@ ContentType.annotations = [
   })
 ];
 
+
+
 function ContentTypeList(){
   this.items = [
     { key: 'test', name: 'Test item', schema: { properties: { first: '', second: '' } } }
@@ -29,6 +31,8 @@ ContentTypeList.annotations = [
   })
 ];
 
+
+
 function ContentTypeShow(){}
 ContentTypeShow.annotations = [
   new ng.core.Component({
@@ -38,14 +42,24 @@ ContentTypeShow.annotations = [
   })
 ];
 
-function ContentTypeCreate(){}
+
+
+function ContentTypeCreate(){
+  this.newItem = {};
+  this.onSubmit = function(){
+    console.log('submitting');
+  };
+}
 ContentTypeCreate.annotations = [
   new ng.core.Component({
     selector: 'content-type-create',
-    directives: [ng.router.ROUTER_DIRECTIVES],
+    directives: [ng.router.ROUTER_DIRECTIVES, ng.common.CORE_DIRECTIVES],
+    pipes: [window.app.MapToIterablePipe, window.app.FindValuePipe],
     templateUrl: 'scripts/modules/content_type/views/create.html'
   })
 ];
+
+
 
 function ContentTypeEdit(){}
 ContentTypeEdit.annotations = [
