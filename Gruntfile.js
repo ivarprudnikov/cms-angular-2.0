@@ -236,26 +236,13 @@ module.exports = function (grunt) {
       }
     },
 
-    // ng-annotate tries to make the code safe for minification automatically
-    // by using the Angular long form for dependency injection.
-    ngAnnotate: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>/scripts',
-          src: ['{,*/}*.js'],
-          dest: '<%= yeoman.dist %>/scripts'
-        }]
-      }
-    },
-
     // uglify js files
     ///////////////////////////////////////
     uglify: {
       options: {
         mangle: false,
         compress: false,
-        beautify: false
+        beautify: true
       },
       dist: {
         files: [
@@ -348,7 +335,6 @@ module.exports = function (grunt) {
       'useminPrepare',  // read html build blocks and prepare to concatenate and move css,js to dist
       'concat',         // concatinates files and moves them to dist
       'cssmin',         // minify css in dist
-      'ngAnnotate',     // makes angular code safe for minification in dist
       'htmlmin',        // minify and copy html files to dist
       'copy:dist',      // move unhanled files to dist
       'uglify',         // minifies & uglifies js files in dist
