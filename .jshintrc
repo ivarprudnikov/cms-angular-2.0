@@ -20,7 +20,6 @@
   "nonew": true,
   "noarg": true,
   "quotmark": false,
-  "regexp": true,
   "undef": true,
   "unused": false,
   "strict": true,

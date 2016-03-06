@@ -5,7 +5,7 @@
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "git@github.com:ivarprudnikov/cms-angular-2.0.git"
   },
   "engines": {
     "node": ">=4.0"

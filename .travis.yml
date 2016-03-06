@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - '4.1'
+
+env:
+  global:
+    - secure: "I3v5v49XZ9IAFcAjXPL/xFMY46FqoeBBFmL7bELfvgMWxwQXpgdtDF/uW2scuWcR8gaDM0cWDd66lLFyOkc73zMOBhzIt25zi3pKGCq10I7+9WmrhqsbGOpuKOB4eGoZ8xM+xv/tqdntvP+/LeoBNVT0lOZmI7P+KARtmqHjuy0Ljsv5YlN1FLkF2V44Px6MlMh4GFtfNySIfr9A4uArSWElZ74tma1PpIXW2p/kRUVAw/mArI8xFqK/OKS9yp8AQv/CTDDBrP9Z/uRByFj1hn7udQk8XyZvO/uwKNTiZGq5HK1a+KPlOgBpIeyvLZw0+vajK4uYK6oznpnukrTEmaVrluwtp8gCO8se4bEU9DyQ9RF97HAoik81rJqlRfpTAHArzxLT7x7m3NwzkjpVJ6PBy8C7CLh2bllufMMf6ETCQJb+DocdZllKa//NZV/IzwIk0iWsSgQul7oW2V3RNe+igKhVgot0Xyj0o44LyCVLQJIAe+dI68IkDOQJbqSF1NQ0atymHzzsjXeLh0K4RE+3oV9AxZ7tEjBWbCviiUkYBaKpQMdQs3mmuXaMrZg0/CPa3jYxit/t3hbRJVGNyvxrA03zREOmwG7ZAcZUl75dHDM4ioB/j78vY+PQxni/uqK4KAkho98IgZk83uPPonF28eIz44wtmfPWd0p8s+w="
+
+install:
+- 'npm install'
+
+script:
+- 'grunt build'
+
+after_success:
+- export GIT_DEPLOY_DIR=dist
+- export GIT_DEPLOY_BRANCH=gh-pages
+- export GIT_DEPLOY_REPO=https://$GITHUB_TOKEN@github.com/ivarprudnikov/cms-angular-2.0.git
+- source ./deploy_to_github.sh
+- echo "Done deploy.sh"
+
