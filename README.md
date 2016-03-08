@@ -1,6 +1,8 @@
-# CMS with angular 2.0
+# CMS with angular 2.0 IN PROGRESS
 
 [![Build Status](https://travis-ci.org/ivarprudnikov/cms-angular-2.0.svg?branch=master)](https://travis-ci.org/ivarprudnikov/cms-angular-2.0)
+
+## [Live demo](http://ivarprudnikov.github.io/cms-angular-2.0)
 
 The goal here is to set up angular app that deals with content management, to see later how it compares
 to an app built with older angular version.
