@@ -18,7 +18,8 @@ App.annotations = [
       ng.router.ROUTER_BINDINGS,
       ng.router.ROUTER_PROVIDERS,
       ng.core.provide(ng.router.APP_BASE_HREF, {useValue: '/'}),
-      ng.core.provide(ng.router.LocationStrategy, {useClass: ng.router.HashLocationStrategy})
+      ng.core.provide(ng.router.LocationStrategy, {useClass: ng.router.HashLocationStrategy}),
+
       // TODO: provide replacement for ng.compiler.XHR which is used to load templates via TemplateNormalizer.normalizeTemplate method
     ]
   })
