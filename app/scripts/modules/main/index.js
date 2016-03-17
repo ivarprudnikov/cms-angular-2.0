@@ -1,11 +1,7 @@
-function Main(){}
+import {Component} from 'angular2/core';
 
-Main.annotations = [
-  new ng.core.Component({
-    selector: 'main',
-    templateUrl: 'scripts/modules/main/views/landing.html'
-  })
-];
-
-window.app = window.app || {};
-window.app.Main = Main;
+@Component({
+  selector: 'main',
+  templateUrl: 'scripts/modules/main/views/landing.html'
+})
+export class Main {}

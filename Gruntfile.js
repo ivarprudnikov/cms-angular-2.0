@@ -22,23 +22,9 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      js: {
-        files: [
-	        '<%= yeoman.app %>/{,**/}*.js',
-          '!<%= yeoman.app %>/{,**/}generated*.js'
-        ],
-        tasks: ['jshint'],
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
-      },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server']
-      },
-      templates: {
-        files: ['<%= yeoman.app %>/*/{,**/}*.html'],
-        tasks: ['ngtemplates']
       },
       livereload: {
         options: {
@@ -79,20 +65,6 @@ module.exports = function (grunt) {
           open: true,
           base: '<%= yeoman.dist %>'
         }
-      }
-    },
-
-    // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      main: {
-        src: [
-          'Gruntfile.js',
-          '<%= yeoman.app %>/{,**/}*.js', // aggressive approach
-	        '!<%= yeoman.app %>/{,**/}generated*.js'
-        ]
       }
     },
 
@@ -221,21 +193,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // angular templates
-    // extract all templates and create
-    // separate module for injection
-    ///////////////////////////////////////
-    ngtemplates : {
-      'admin.webclient.html-templates' : {
-        cwd     : '<%= yeoman.app %>',
-        src     : 'scripts/modules/{,**/}*.html',
-        dest    : '<%= yeoman.app %>/scripts/<%= yeoman.tplsFile %>',
-        options : {
-          standalone : true
-        }
-      }
-    },
-
     // uglify js files
     ///////////////////////////////////////
     uglify: {
@@ -290,18 +247,30 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: {
-        tasks: ['compass:server'],
+        tasks: ['compass:server', 'browserify'],
         options: {
           logConcurrentOutput: true
         }
       },
       dist: {
         tasks: [
-          'compass:dist'   // compile sass
+          'compass:dist'
         ],
         options: {
           logConcurrentOutput: true
         }
+      }
+    },
+
+    browserify: {
+      js: {
+        // A single entry point for our app
+        src: '<%= yeoman.app %>/scripts/main.js',
+        // Compile to a single file to add a script tag for in your HTML
+        dest: '<%= yeoman.app %>/scripts/generatedBundle.js'
+      },
+      options: {
+        transform: ['babelify']
       }
     }
 
@@ -319,7 +288,6 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'concurrent:server',
-      'ngtemplates',    // generate angular templates file in app
       'connect:livereload',
       'watch'
     ]);
@@ -331,7 +299,6 @@ module.exports = function (grunt) {
       'jshint:main',
       'clean:dist',     // clean temp and dist directories
       'concurrent:dist',// compile sass, move images to dist
-      'ngtemplates',    // generate angular templates file in app
       'useminPrepare',  // read html build blocks and prepare to concatenate and move css,js to dist
       'concat',         // concatinates files and moves them to dist
       'cssmin',         // minify css in dist

@@ -1,30 +1,27 @@
-function App(){}
+import {Main} from './modules/main/index'
+import {Header} from './modules/header/index'
+import {ContentType} from './modules/content_type/index'
+import {APP_BASE_HREF, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig, RouteParams, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+import {provide, Component, View, Input} from 'angular2/core';
 
-App.annotations = [
-  new ng.router.RouteConfig([
-    { path: '/', component: window.app.Main, name: 'Main', useAsDefault: true },
-    { path: '/content_type/...', component: window.app.ContentType, name: 'ContentType'}
-  ]),
-  new ng.core.View({
-    template: '' +
-      '<app-header></app-header>' +
-      '<router-outlet></router-outlet>' +
-      '<app-footer></app-footer>',
-    directives: [ng.router.ROUTER_DIRECTIVES, window.app.Header]
-  }),
-  new ng.core.Component({
-    selector: '#application',
-    providers: [
-      ng.router.ROUTER_BINDINGS,
-      ng.router.ROUTER_PROVIDERS,
-      ng.core.provide(ng.router.APP_BASE_HREF, {useValue: '/'}),
-      ng.core.provide(ng.router.LocationStrategy, {useClass: ng.router.HashLocationStrategy}),
-
-      // TODO: provide replacement for ng.compiler.XHR which is used to load templates via TemplateNormalizer.normalizeTemplate method
-    ]
-  })
-];
-
-window.app = window.app || {};
-window.app.App = App;
-
+@Component({
+  selector: '#application',
+  viewProviders: [
+    ROUTER_PROVIDERS,
+    provide(APP_BASE_HREF, {useValue: '/'}),
+    provide(LocationStrategy, {useClass: HashLocationStrategy})
+  ]
+})
+@View({
+  directives: [ROUTER_DIRECTIVES, Header],
+  template: `
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  `
+})
+@RouteConfig([
+  { path: '/', component: Main, name: 'Main', useAsDefault: true },
+  { path: '/content_type/...', component: ContentType, name: 'ContentType'}
+])
+export class App {}

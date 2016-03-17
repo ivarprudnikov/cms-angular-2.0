@@ -1,75 +1,90 @@
-'use strict';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig, RouteParams} from 'angular2/router';
+import {CORE_DIRECTIVES, Component, View} from 'angular2/core';
+import {FindValuePipe} from '../util/findValue'
+import {MapToIterablePipe} from '../util/mapToIterable'
 
-function ContentType(){}
-ContentType.annotations = [
-  new ng.router.RouteConfig([
-    { path: '/', component: ContentTypeList, name: 'ContentTypeList' },
-    { path: '/show/:id', component: ContentTypeShow, name: 'ContentTypeShow' },
-    { path: '/create', component: ContentTypeCreate, name: 'ContentTypeCreate' },
-    { path: '/edit/:id', component: ContentTypeEdit, name: 'ContentTypeEdit' }
-  ]),
-  new ng.core.Component({
-    selector: 'content-type',
-    directives: [ng.router.ROUTER_DIRECTIVES],
-    template: '<router-outlet></router-outlet>'
-  })
-];
+@Component({
+  selector: 'content-type-list'
+})
+@View({
+  directives: [ROUTER_DIRECTIVES, CORE_DIRECTIVES],
+  templateUrl: 'scripts/modules/content_type/views/list.html',
+  pipes: [MapToIterablePipe]
+})
+export class ContentTypeList {
 
+  constructor() {
+    this.items = [];
+  }
 
-
-function ContentTypeList(){
-  this.items = [
-    { key: 'test', name: 'Test item', schema: { properties: { first: '', second: '' } } }
-  ];
+  routerOnActivate(nextInstruction, prevInstruction){
+    this.items = [
+      {key: 'test', name: 'Test item', schema: {properties: {first: '', second: ''}}}
+    ];
+  }
 }
-ContentTypeList.annotations = [
-  new ng.core.Component({
-    selector: 'content-type-list',
-    directives: [ng.router.ROUTER_DIRECTIVES, ng.common.CORE_DIRECTIVES],
-    pipes: [window.app.MapToIterablePipe],
-    templateUrl: 'scripts/modules/content_type/views/list.html'
-  })
-];
+
+
+@Component({
+  selector: 'content-type'
+})
+@View({
+  directives: [ROUTER_DIRECTIVES],
+  template: '<router-outlet></router-outlet>'
+})
+@RouteConfig([
+  { path: '/list', component: ContentTypeList, name: 'ContentTypeList' },
+//  //{ path: '/show/:id', component: ContentTypeShow, name: 'ContentTypeShow' },
+//  //{ path: '/create', component: ContentTypeCreate, name: 'ContentTypeCreate' },
+//  //{ path: '/edit/:id', component: ContentTypeEdit, name: 'ContentTypeEdit' }
+])
+export class ContentType {}
 
 
 
-function ContentTypeShow(){}
-ContentTypeShow.annotations = [
-  new ng.core.Component({
-    selector: 'content-type-show',
-    directives: [ng.router.ROUTER_DIRECTIVES],
-    templateUrl: 'scripts/modules/content_type/views/show.html'
-  })
-];
+
+@Component({
+  selector: 'content-type-show'
+})
+@View({
+  directives: [ROUTER_DIRECTIVES],
+  templateUrl: 'scripts/modules/content_type/views/show.html'
+})
+export class ContentTypeShow {
+}
 
 
-
-function ContentTypeCreate(){
-  this.newItem = {};
-  this.onSubmit = function(){
+@Component({
+  selector: 'content-type-create'
+})
+@View({
+  directives: [ROUTER_DIRECTIVES, CORE_DIRECTIVES],
+  templateUrl: 'scripts/modules/content_type/views/create.html',
+  pipes: [MapToIterablePipe, FindValuePipe]
+})
+export class ContentTypeCreate {
+  constructor(routeParams: RouteParams) {
+    this.newItem = {};
+  }
+  onSubmit(){
     console.log('submitting');
-  };
+  }
 }
-ContentTypeCreate.annotations = [
-  new ng.core.Component({
-    selector: 'content-type-create',
-    directives: [ng.router.ROUTER_DIRECTIVES, ng.common.CORE_DIRECTIVES],
-    pipes: [window.app.MapToIterablePipe, window.app.FindValuePipe],
-    templateUrl: 'scripts/modules/content_type/views/create.html'
-  })
-];
 
 
-
-function ContentTypeEdit(){}
-ContentTypeEdit.annotations = [
-  new ng.core.Component({
-    selector: 'content-type-edit',
-    directives: [ng.router.ROUTER_DIRECTIVES],
-    templateUrl: 'scripts/modules/content_type/views/edit.html'
-  })
-];
-
-window.app = window.app || {};
-window.app.ContentType = ContentType;
-window.app.ContentTypeList = ContentTypeList;
+@Component({
+  selector: 'content-type-edit'
+})
+@View({
+  directives: [ROUTER_DIRECTIVES, CORE_DIRECTIVES],
+  templateUrl: 'scripts/modules/content_type/views/edit.html',
+  pipes: [MapToIterablePipe, FindValuePipe]
+})
+export class ContentTypeEdit {
+  constructor(routeParams: RouteParams) {
+    this.item = {};
+  }
+  onSubmit(){
+    console.log('submitting');
+  }
+}

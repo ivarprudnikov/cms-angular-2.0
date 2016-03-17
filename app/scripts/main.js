@@ -1,5 +1,4 @@
-"use strict";
+import {App} from './app';
+import {bootstrap} from 'angular2/platform/browser';
 
-document.addEventListener('DOMContentLoaded', function() {
-  ng.platform.browser.bootstrap(window.app.App);
-});
+bootstrap(App, []).catch(err => console.error(err));

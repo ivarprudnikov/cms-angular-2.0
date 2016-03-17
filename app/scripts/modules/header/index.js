@@ -1,14 +1,11 @@
-function Header(){}
+import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, View} from 'angular2/core';
 
-Header.annotations = [
-  new ng.core.View({
-    templateUrl: 'scripts/modules/header/views/header.html',
-    directives: [ng.router.ROUTER_DIRECTIVES]
-  }),
-  new ng.core.Component({
-    selector: 'app-header'
-  })
-];
-
-window.app = window.app || {};
-window.app.Header = Header;
+@View({
+  templateUrl: 'scripts/modules/header/views/header.html',
+  directives: [ROUTER_DIRECTIVES]
+})
+@Component({
+  selector: 'app-header'
+})
+export class Header {}
