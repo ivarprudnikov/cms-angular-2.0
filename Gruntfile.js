@@ -6,12 +6,13 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
+  require('time-grunt')(grunt);
 
   // Configurable paths for the application
   var appConfig = {
     app: 'app',
     dist: 'dist',
-    tplsFile: 'generatedTemplates.js'
+    jsBundle: 'generatedBundle.js'
   };
 
   // Define the configuration for all the tasks
@@ -76,7 +77,7 @@ module.exports = function (grunt) {
           src: [
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
-            '!<%= yeoman.dist %>/.git{,*/}*'
+            '<%= yeoman.app %>/scripts/<%= yeoman.jsBundle %>'
           ]
         }]
       },
@@ -197,9 +198,9 @@ module.exports = function (grunt) {
     ///////////////////////////////////////
     uglify: {
       options: {
-        mangle: false,
-        compress: false,
-        beautify: true
+        mangle: true,
+        compress: true,
+        beautify: false
       },
       dist: {
         files: [
@@ -254,7 +255,7 @@ module.exports = function (grunt) {
       },
       dist: {
         tasks: [
-          'compass:dist'
+          'compass:dist', 'browserify'
         ],
         options: {
           logConcurrentOutput: true
@@ -267,7 +268,7 @@ module.exports = function (grunt) {
         // A single entry point for our app
         src: '<%= yeoman.app %>/scripts/main.js',
         // Compile to a single file to add a script tag for in your HTML
-        dest: '<%= yeoman.app %>/scripts/generatedBundle.js'
+        dest: '<%= yeoman.app %>/scripts/<%= yeoman.jsBundle %>'
       },
       options: {
         transform: ['babelify']
@@ -281,7 +282,6 @@ module.exports = function (grunt) {
     if (target === 'dist') {
       return grunt.task.run([
         'build',
-        'concurrent:server',
         'connect:dist:keepalive']);
     }
 
@@ -296,7 +296,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', 'build assets', function (target) {
 
     grunt.task.run([
-      'jshint:main',
       'clean:dist',     // clean temp and dist directories
       'concurrent:dist',// compile sass, move images to dist
       'useminPrepare',  // read html build blocks and prepare to concatenate and move css,js to dist
