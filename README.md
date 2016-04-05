@@ -18,6 +18,12 @@ to an app built with older angular version.
 
 Storage is going to be implemented using localStorage
 
+**Development**
+
+Install dependencies and `grunt serve` to run locally and watch for changes.
+You can also run production version with `grunt serve:dist`.
+
+
 
 
 
