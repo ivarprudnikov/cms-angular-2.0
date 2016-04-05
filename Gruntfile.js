@@ -32,7 +32,7 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/scripts/{,*/}generated*.js',
+          '<%= yeoman.app %>/{,**/}generated*.js',
           '<%= yeoman.app %>/*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -198,7 +198,7 @@ module.exports = function (grunt) {
     ///////////////////////////////////////
     uglify: {
       options: {
-        mangle: true,
+        mangle: false,
         compress: true,
         beautify: false
       },
@@ -248,14 +248,14 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: {
-        tasks: ['compass:server', 'browserify'],
+        tasks: ['compass:server'],
         options: {
           logConcurrentOutput: true
         }
       },
       dist: {
         tasks: [
-          'compass:dist', 'browserify'
+          'compass:dist', 'browserify:dist'
         ],
         options: {
           logConcurrentOutput: true
@@ -264,10 +264,15 @@ module.exports = function (grunt) {
     },
 
     browserify: {
-      js: {
-        // A single entry point for our app
+      dev: {
         src: '<%= yeoman.app %>/scripts/main.js',
-        // Compile to a single file to add a script tag for in your HTML
+        dest: '<%= yeoman.app %>/scripts/<%= yeoman.jsBundle %>',
+        options: {
+          watch: true
+        }
+      },
+      dist: {
+        src: '<%= yeoman.app %>/scripts/main.js',
         dest: '<%= yeoman.app %>/scripts/<%= yeoman.jsBundle %>'
       },
       options: {
@@ -289,6 +294,7 @@ module.exports = function (grunt) {
       'clean:server',
       'concurrent:server',
       'connect:livereload',
+      'browserify:dev',
       'watch'
     ]);
   });
