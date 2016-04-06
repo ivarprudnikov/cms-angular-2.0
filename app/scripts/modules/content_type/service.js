@@ -1,65 +1,60 @@
-'use strict';
+export class ContentTypeService {
 
-angular
-	.module('admin.webclient.content_type')
-	.service('ContentTypeService',['$q','$window', function($q, $window){
+  constructor() {
+    this.STORAGE_KEY = 'content_types';
+  }
 
-    var STORAGE_KEY = 'content_types';
+  getStorage(){
+    return JSON.parse(window.localStorage.getItem(this.STORAGE_KEY)) || {};
+  }
 
-    function getStorage(){
-      return JSON.parse($window.localStorage.getItem(STORAGE_KEY)) || {};
+  setStorage(key, data){
+    var existing = this.getStorage();
+    if(data == null){
+      delete existing[key];
+    } else {
+      existing[key] = data;
     }
+    window.localStorage.setItem(this.STORAGE_KEY, JSON.stringify(existing));
+  }
 
-    function setStorage(key, data){
-      var existing = getStorage();
-      if(data == null){
-        delete existing[key];
-      } else {
-        existing[key] = data;
-      }
-      $window.localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-    }
+  findByKey(key){
+    return new Promise((resolve, reject) => {
+      resolve(this.getStorage()[key])
+    });
+  }
 
-    this.findByKey = function(key){
-      return $q(function(resolve, reject){
-        resolve(getStorage()[key]);
+  list(){
+    return new Promise((resolve, reject) => {
+      let items = this.getStorage();
+      let resp = Object.keys(items).map(k => items[k]);
+      resolve(resp);
+    });
+  }
+
+  save(item){
+    return new Promise((resolve, reject) => {
+      this.setStorage(item.key, item);
+      resolve(item);
+    });
+  }
+
+  update(item){
+    return new Promise((resolve, reject) => {
+      var existing = this.getStorage()[item.key];
+      delete item.key;
+      Object.keys(item).forEach(k => {
+        existing[k] = item[k];
       });
-    };
+      this.setStorage(existing.key, existing);
+      resolve(existing);
+    });
+  }
 
-    this.list = function(){
-      return $q(function(resolve, reject){
-        var items = getStorage();
-        var resp = Object.keys(items).map(function(k){
-          return items[k];
-        });
-        resolve(resp);
-      });
-    };
-
-    this.save = function(item){
-      return $q(function(resolve, reject){
-        setStorage(item.key, item);
-        resolve(item);
-      });
-    };
-
-    this.update = function(item){
-      return $q(function(resolve, reject){
-        var existing = getStorage()[item.key];
-        delete item.key;
-        Object.keys(item).forEach(function(k){
-          existing[k] = item[k];
-        });
-        setStorage(existing.key, existing);
-        resolve(existing);
-      });
-    };
-
-    this.delete = function(key){
-      return $q(function(resolve, reject){
-        setStorage(key, null);
-        resolve();
-      });
-    };
-
-  }]);
+  delete(key){
+    return new Promise((resolve, reject) => {
+      this.setStorage(key, null);
+      resolve();
+    });
+  }
+}
