@@ -78,10 +78,17 @@ import {MapToIterablePipe} from '../util/mapToIterable'
   `
 })
 export class ContentTypeCreate {
+
   constructor(routeParams: RouteParams) {
     this.newItem = {};
   }
+
   onSubmit(){
     console.log('submitting');
   }
+
+  addSchemaField(){
+
+  }
+
 }
