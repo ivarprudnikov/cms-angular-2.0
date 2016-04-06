@@ -1,5 +1,5 @@
 import {ROUTER_DIRECTIVES, RouteParams} from 'angular2/router';
-import {CORE_DIRECTIVES, Component, View} from 'angular2/core';
+import {Component, View} from 'angular2/core';
 import {FindValuePipe} from '../util/findValue'
 import {MapToIterablePipe} from '../util/mapToIterable'
 
@@ -7,7 +7,7 @@ import {MapToIterablePipe} from '../util/mapToIterable'
   selector: 'content-type-create'
 })
 @View({
-  directives: [ROUTER_DIRECTIVES, CORE_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES],
   pipes: [MapToIterablePipe, FindValuePipe],
   template: `
   <div class="page-head">
